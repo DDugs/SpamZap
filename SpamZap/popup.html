@@ -1,17 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>WhatsApp Spam Detector</title>
-  <style>
-    body { font-family: Arial, sans-serif; width: 200px; padding: 10px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpamZap</title>
+    <link rel="stylesheet" href="popup.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h3>Spam Detector Settings</h3>
-  <p>Adjust the spam sensitivity:</p>
-  <input type="range" id="sensitivity" min="1" max="5" value="3" />
-  <button id="save">Save Settings</button>
-
-  <script src="popup.js"></script>
+    <div class="popup-container">
+        <header class="popup-header">
+            <h1>Social Media Spam Finder</h1>
+        </header>
+        <div class="popup-content">
+            <p>Detect and flag spam messages instantly on any social media app</p>
+            <div id="status"></div>
+        </div>
+        <div class="container mt-3">
+            <div class="card p-4">
+                <div id="urlInputSection" class="mb-3">
+                    <input type="text" id="urlInput" class="form-control" placeholder="Enter URL to check...">
+                    <button id="checkButton" class="btn btn-primary mt-2">Check URL <i class="fas fa-check"></i></button>
+                </div>
+                <div id="resultSection" class="mt-3">
+                    <div class="alert alert-success" id="safeAlert">The URL is safe!</div>
+                    <div class="alert alert-danger" id="maliciousAlert">Malicious URL detected!</div>
+                    <div class="alert alert-warning" id="errorAlert">Error checking URL!</div>
+                </div>
+            </div>
+        </div>
+        <footer class="popup-footer">
+            <p>Check Console and Stay safe online!</p>
+            <a href="https://www.linkedin.com/in/ddugs" target="_blank">
+                <img src="https://img.icons8.com/color/48/000000/linkedin.png" class="social-icon" alt="LinkedIn">
+            </a>
+            <a href="https://github.com/ddugs" target="_blank">
+                <img src="https://img.icons8.com/ios-filled/50/000000/github.png" class="social-icon" alt="GitHub">
+            </a>
+            <a href="https://portfolio-dhruvfolio.web.app/" target="_blank">
+                <img src="https://img.icons8.com/ios-filled/48/000000/suitcase.png" class="social-icon" alt="Portfolio">
+            </a>
+        </footer>
+    </div>
+    <script src="popup.js"></script>
 </body>
 </html>
