@@ -1,19 +1,24 @@
 {
   "manifest_version": 3,
-  "name": "WhatsApp Spam Detector",
+  "name": "SpamZap",
   "version": "1.0",
+  "action": {
+    "default_popup": "popup.html"
+  },
   "permissions": [
     "activeTab",
-    "scripting",
-    "http://127.0.0.1:5000/*"
+    "scripting"
+
   ],
+  "host_permissions": ["http://127.0.0.1:5000/*"],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
       "matches": ["https://web.whatsapp.com/*"],
-      "js": ["content.js"]
+      "js": ["content.js"],
+      "css" : ["popup.css"]
     }
   ]
 }
