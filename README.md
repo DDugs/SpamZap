@@ -1,4 +1,5 @@
 # SpamZap
+![logo](https://github.com/user-attachments/assets/65dc58c7-93e0-41a5-9afa-34795114b755)
 ![Screenshot 2024-10-05 151143](https://github.com/user-attachments/assets/1fef18da-6479-4291-883f-860e6c80c623)
 
 As we are still in building stage, output will be visible only on console.
