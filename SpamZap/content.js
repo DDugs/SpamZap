@@ -1,27 +1,86 @@
-console.log("WhatsApp Spam Detector loaded");
+console.log("SpamZap Detector loaded");
 
-// Map to keep track of processed messages with timestamps
 let processedMessages = new Map();
-
-// Function to detect new messages
 function detectMessages() {
-    let chatContainers = document.querySelectorAll('.message-in, .message-out'); // Check WhatsApp's DOM structure
+    let chatContainers = document.querySelectorAll('.message-in, .message-out');
     chatContainers.forEach(chat => {
         let messageElement = chat.querySelector('.copyable-text');
         let messageText = messageElement ? messageElement.innerText : '';
 
         if (messageText) {
-            // Check if the message is already processed
             if (!processedMessages.has(messageText)) {
-                processedMessages.set(messageText, Date.now()); // Add the message to the map with a timestamp
-                console.log("Detected message: ", messageText);
-                checkForSpam(messageText, chat); // Analyze message for spam/fraud
+                processedMessages.set(messageText, Date.now());
+                if (chat.classList.contains('message-in')) {
+                    console.log("Stranger: ", messageText);
+                } else if (chat.classList.contains('message-out')) {
+                    console.log("You: ", messageText);
+                }
+
+                detectLinks(messageText, messageElement);
+                checkForSpam(messageText, messageElement);
             }
         }
     });
 }
 
-// Function to send message to the Flask server for spam detection
+function detectLinks(text, messageElement) {
+    const urlPattern = /(https?:\/\/[^\s]+)/g;
+    const urls = text.match(urlPattern);
+
+    if (urls) {
+        urls.forEach(async (url) => {
+            console.log("Detected URL:", url);
+
+            try {
+                const previewResponse = await fetch(`https://opengraph.io/api/1.1/site/${encodeURIComponent(url)}?app_id=9837fbc0-5899-4875-a03d-a650900db1d0`); //add your opengraph api key here (get it from opengraph.io)
+                const previewData = await previewResponse.json();
+                if (previewData && previewData.hybridGraph) {
+                    console.log("Preview:", previewData.hybridGraph.title, previewData.hybridGraph.description);
+                }
+            } catch (err) {
+                console.error("Error fetching preview:", err);
+            }
+            try {
+                const safeBrowsingResponse = await fetch('http://localhost:5000/checkUrl', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ url }),
+                });
+                
+                const safeBrowsingData = await safeBrowsingResponse.json();
+                if (safeBrowsingData.malicious) {
+                    console.log("Malicious URL detected:", url);
+                    flagMessage(messageElement);
+                } else {
+                    console.log("Safe URL detected:", url);
+                }
+            } catch (error) {
+                console.error("Error checking URL safety:", error);
+            }
+
+            const expandedUrl = await expandShortUrl(url);
+            if (expandedUrl !== url) {
+                console.log("Expanded URL:", expandedUrl);
+            }
+        });
+    }
+}
+
+async function expandShortUrl(shortUrl) {
+    try {
+        const response = await fetch(`http://unshorten.me/json/${encodeURIComponent(shortUrl)}`);
+        const data = await response.json();
+        if (data.success) {
+            return data.resolvedURL;
+        }
+    } catch (error) {
+        console.error("Error expanding URL:", error);
+    }
+    return shortUrl;
+}
+
 async function checkForSpam(text, messageElement) {
     try {
         const response = await fetch('http://localhost:5000/predict', {
@@ -46,26 +105,18 @@ async function checkForSpam(text, messageElement) {
     }
 }
 
-// Function to flag suspicious messages visually
 function flagMessage(element) {
-    element.style.border = "2px solid red"; // Highlight the message
+    element.style.border = "2px solid red";
     element.setAttribute('title', 'Potential spam detected!');
 }
 
-// Function to initialize the MutationObserver
-function initMutationObserver() {
-    const chatContainer = document.querySelector('#main .copyable-area'); // Adjust this selector if necessary
-
-    if (chatContainer) {
+function observeChat() {
+    const chatList = document.querySelector('._1ays2');
+    if (chatList) {
         const observer = new MutationObserver(detectMessages);
-        observer.observe(chatContainer, { childList: true, subtree: true });
-        console.log("MutationObserver initialized.");
-    } else {
-        console.error("Chat container not found. Retrying...");
-        setTimeout(initMutationObserver, 1000); // Retry after 1 second if not found
+        observer.observe(chatList, { childList: true, subtree: true });
     }
 }
 
-// Initial detection and MutationObserver setup
-detectMessages();
-initMutationObserver();
+observeChat();
+setInterval(detectMessages, 2000);
