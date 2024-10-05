@@ -32,7 +32,7 @@ function detectLinks(text, messageElement) {
             console.log("Detected URL:", url);
 
             try {
-                const previewResponse = await fetch(`https://opengraph.io/api/1.1/site/${encodeURIComponent(url)}?app_id=9837fbc0-5899-4875-a03d-a650900db1d0`); //add your opengraph api key here (get it from opengraph.io)
+                const previewResponse = await fetch(`https://opengraph.io/api/1.1/site/${encodeURIComponent(url)}?app_id=your_api_key_here`); //add your opengraph api key here (get it from opengraph.io)
                 const previewData = await previewResponse.json();
                 if (previewData && previewData.hybridGraph) {
                     console.log("Preview:", previewData.hybridGraph.title, previewData.hybridGraph.description);
