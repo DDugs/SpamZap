@@ -1,7 +1,7 @@
 # SpamZap
 ![Screenshot 2024-10-05 151143](https://github.com/user-attachments/assets/1fef18da-6479-4291-883f-860e6c80c623)
 
-As we are still in building stage, output will be visible only on console
+As we are still in building stage, output will be visible only on console.
 Stay Safe Online!!
 
 ## About
