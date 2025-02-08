@@ -1,6 +1,6 @@
 # SpamZap
-<img src="https://github.com/user-attachments/assets/65dc58c7-93e0-41a5-9afa-34795114b755" width="200">
-<img src="https://github.com/user-attachments/assets/1fef18da-6479-4291-883f-860e6c80c623" width="200">
+<img src="https://github.com/user-attachments/assets/65dc58c7-93e0-41a5-9afa-34795114b755" width="400">
+<img src="https://github.com/user-attachments/assets/1fef18da-6479-4291-883f-860e6c80c623" width="400">
 
 As we are still in building stage, output will be visible only on console.
 Stay Safe Online!!
